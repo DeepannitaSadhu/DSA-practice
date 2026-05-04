@@ -1,30 +1,20 @@
 #Solution of Problem 2
-def max_sum(chars):
-    n = len(chars)
-    s2 = chars + chars
+def minimum_steps(nums, k):
+    rem = nums[0] % k
+    for num in nums:
+        if num % k != rem:
+            return -1
+    arr = [(num - rem) // k for num in nums]
+    arr.sort()
+    median = arr[len(arr) // 2]
+    steps = 0
+    for val in arr:
+        steps += abs(val - median)
 
-    freq = {}
-    l = 0
-    curr_sum = 0
-    max_s = 0
+    return steps
 
-    for r in range(len(s2)):
-        ch = s2[r]
-        freq[ch] = freq.get(ch, 0) + 1
-        curr_sum += ord(ch) - 96
-        while freq[ch] > 1 or (r - l + 1) > n:
-            left = s2[l]
-            freq[left] -= 1
-            curr_sum -= ord(left) - 96
+n = int(input())
+nums = list(map(int, input().split()))
+k = int(input())
 
-            if freq[left] == 0:
-                del freq[left]
-            l += 1
-        max_s = max(max_s, curr_sum)
-    return max_s
-
-chars=input()
-res=max_sum(chars)
-print(res)
-
-    
+print(minimum_steps(nums, k))
